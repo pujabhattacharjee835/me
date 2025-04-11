@@ -1,1 +1,731 @@
-
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Puja Bhattacharjee</title>
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link href="https://fonts.googleapis.com/css2?family=Anton&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+      <style>
+         :root {
+         --primary-color: #4A90E2; 
+         --secondary-color: #0b3d91; 
+         --text-color: #212529; 
+         --text-light: #5a626b;
+         --bg-light: #f9fbfd; 
+         --bg-white: #ffffff;
+         --bg-dark: #161a1d; 
+         --text-on-dark: #e9ecef;
+         --text-on-dark-muted: #adb5bd; 
+         --border-color: #dee2e6;
+         --border-color-dark: #343a40;
+         --card-shadow: 0 6px 20px rgba(0, 0, 0, 0.07); 
+         --card-shadow-hover: 0 10px 25px rgba(0, 0, 0, 0.1);
+         --transition-speed: 0.3s;
+         --transition-speed-fast: 0.2s;
+         --font-heading: 'Anton', sans-serif;
+         --font-body: 'Work Sans', sans-serif;
+         --animation-duration: 0.6s; 
+         }
+         * {
+         margin: 0;
+         padding: 0;
+         box-sizing: border-box;
+         }
+         html {
+         scroll-behavior: smooth;
+         font-size: 100%; 
+         }
+         body {
+         font-family: var(--font-body);
+         line-height: 1.7;
+         background-color: var(--bg-white);
+         color: var(--text-color);
+         font-size: 1rem;
+         -webkit-font-smoothing: antialiased;
+         -moz-osx-font-smoothing: grayscale;
+         overflow-x: hidden; 
+         }
+         #loader-wrapper {
+         position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+         background-color: var(--bg-white); display: flex; justify-content: center;
+         align-items: center; z-index: 9999; opacity: 1; visibility: visible;
+         transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
+         }
+         #loader-wrapper.hidden { opacity: 0; visibility: hidden; }
+         .loader {
+         border: 6px solid #f3f3f3; border-top: 6px solid var(--primary-color);
+         border-radius: 50%; width: 60px; height: 60px;
+         animation: spin 1s linear infinite;
+         }
+         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+         .container {
+         max-width: 1140px;
+         margin: 0 auto;
+         padding: 0 20px;
+         }
+         section {
+         padding: 100px 0;
+         overflow: hidden;
+         }
+         #about, #portfolio, #certifications, #contact {
+         background-color: var(--bg-white);
+         }
+         #about h2, #about h3, #portfolio h2, #certifications h2, #contact h2 {
+         color: var(--text-color);
+         }
+         .dark-section {
+         background-color: var(--bg-dark); color: var(--text-on-dark);
+         }
+         h1, h2, h3, h4 {
+         font-family: var(--font-heading); font-weight: 400;
+         color: var(--secondary-color); margin-bottom: 1.2rem;
+         line-height: 1.2; letter-spacing: 1.5px; 
+         }
+         h1 { font-size: clamp(2.8rem, 6vw, 4.5rem); color: var(--text-color); }
+         h2 { font-size: clamp(2rem, 5vw, 3rem); text-align: center; margin-bottom: 60px; }
+         h3 { font-size: clamp(1.5rem, 4vw, 2rem); color: var(--primary-color); }
+         h4 { font-size: clamp(1.2rem, 3vw, 1.4rem); color: var(--secondary-color); margin-bottom: 0.8rem; }
+         .dark-section h1, .dark-section h2, .dark-section h3, .dark-section h4 { color: var(--text-on-dark); }
+         .dark-section h3 { color: var(--primary-color); }
+         p { margin-bottom: 1.2rem; color: var(--text-light); font-size: 1.05rem; font-weight: 400; }
+         .dark-section p { color: var(--text-on-dark-muted); }
+         strong { font-weight: 600; color: var(--text-color); } 
+         .dark-section strong { color: var(--text-on-dark); }
+         a { color: var(--primary-color); text-decoration: none; font-weight: 500; transition: color var(--transition-speed-fast) ease; }
+         a:hover { color: var(--secondary-color); text-decoration: underline; }
+         .dark-section a { color: var(--primary-color); }
+         .dark-section a:hover { color: #7ac0ff; }
+         .cta-btn {
+         display: inline-block; background: var(--primary-color);
+         color: white !important; padding: 14px 40px; 
+         border: 2px solid transparent; border-radius: 8px; text-decoration: none !important;
+         font-size: 1.1em; font-weight: 600; 
+         font-family: var(--font-body);
+         transition: all var(--transition-speed) ease; 
+         box-shadow: 0 4px 15px rgba(74, 144, 226, 0.3);
+         letter-spacing: 0.5px;
+         }
+         .cta-btn:hover {
+         background: var(--secondary-color); color: white !important;
+         transform: translateY(-4px); box-shadow: 0 8px 20px rgba(11, 61, 145, 0.4);
+         }
+         .cta-btn:active { transform: translateY(-1px); }
+         header {
+         background: linear-gradient(170deg, #eaf2ff 0%, var(--bg-white) 70%);
+         padding: 60px 0; min-height: 90vh; display: flex; align-items: center;
+         }
+         .hero-content { display: flex; align-items: center; justify-content: space-between; gap: 50px; }
+         .hero-text { flex-basis: 55%; max-width: 580px; }
+         .hero-image { flex-basis: 40%; text-align: center; }
+         .hero-image img {
+         max-width: 100%; height: auto; border-radius: 5%;
+         max-height: 420px;
+         box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+         border: 0px solid var(--bg-white); 
+         }
+         .hero-hello { font-size: 1.3rem; font-weight: 600; color: var(--primary-color); margin-bottom: 0.8rem; }
+         header h1 { margin-bottom: 1.5rem; line-height: 1.15; }
+         header .subtitle {
+         font-size: 1.25em; color: var(--text-light); margin-bottom: 35px;
+         font-family: var(--font-body); letter-spacing: normal; font-weight: 400;
+         }
+         header .cta-btn { margin-top: 15px; }
+         #about .container { display: flex; flex-direction: column; align-items: center; text-align: center; }
+         #about p { max-width: 900px; font-size: 1.1rem; }
+         #about .about-intro { font-size: 1.3rem; font-weight: 600; color: var(--primary-color); margin-bottom: 2.5rem; }
+         #about .fun-fact { font-style: normal; color: var(--text-light); margin-top: 1.5rem; font-weight: 500; }
+         #about .fun-fact strong { color: var(--primary-color); }
+         .skills-tools { margin-top: 40px; width: 100%; }
+         .skills-tools h3 { text-align: center; margin-bottom: 30px; }
+         .skills { display: flex; flex-wrap: wrap; gap: 15px; justify-content: center; margin-top: 20px; }
+         .skill-tag {
+         background: #e9f1ff; color: var(--secondary-color); padding: 10px 20px;
+         border-radius: 30px; font-size: 1em; font-weight: 500;
+         transition: all var(--transition-speed-fast) ease; border: 1px solid transparent;
+         }
+         .skill-tag:hover {
+         background-color: var(--primary-color); color: white;
+         transform: scale(1.05); box-shadow: 0 2px 8px rgba(74, 144, 226, 0.3);
+         }
+         #certifications .cert-list {
+         display: grid;
+         grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+         gap: 18px;
+         max-width: 1000px; 
+         margin: 0 auto;
+         }
+         .cert {
+         background: var(--bg-light);
+         padding: 18px 25px;
+         border-radius: 10px;
+         border: 1px solid var(--border-color);
+         font-size: 1rem;
+         transition: all var(--transition-speed-fast) ease;
+         }
+         .cert:hover {
+         border-left: 5px solid var(--primary-color);
+         transform: translateX(5px);
+         }
+         .cert strong {
+         color: var(--primary-color);
+         font-weight: 600;
+         }
+         .cert em {
+         font-size: 0.9em;
+         color: var(--text-light);
+         display: block;
+         margin-top: 4px;
+         }
+         .card {
+         background: var(--bg-white); border-radius: 12px;
+         box-shadow: var(--card-shadow); border: 1px solid var(--border-color);
+         transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease, border-color var(--transition-speed) ease;
+         }
+         .card:hover {
+         transform: translateY(-6px); box-shadow: var(--card-shadow-hover);
+         }
+         .dark-section .card {
+         background: #212529; color: var(--text-on-dark);
+         border: 1px solid var(--border-color-dark); box-shadow: none;
+         }
+         .dark-section .card:hover {
+         transform: translateY(-6px); border-color: var(--primary-color);
+         box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3); 
+         }
+         .dark-section .card h4 { color: var(--text-on-dark); font-family: var(--font-heading); }
+         .dark-section .card p { color: var(--text-on-dark-muted); }
+         .dark-section .card .price { color: var(--primary-color); }
+         .dark-section .card .price span { color: var(--text-on-dark-muted); }
+         .dark-section .card .cta-btn { }
+         #services h2 { margin-bottom: 70px; }
+         .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 35px; }
+         .service-card { padding: 40px 30px; text-align: center; }
+         .service-card h4 { margin-bottom: 15px; font-size: 1.5rem; } 
+         .service-card .price { font-size: 1.3rem; font-weight: 700; color: var(--primary-color); margin-top: 25px; display: block; }
+         .service-card .price span { font-size: 0.9rem; font-weight: 400; color: var(--text-light); }
+         .service-card .cta-btn { margin-top: 25px; font-size: 1em; padding: 10px 25px; }
+         #portfolio h2 { margin-bottom: 20px; }
+         #portfolio .section-subtitle { display: block; text-align: center; max-width: 700px; margin: 0 auto 60px auto; color: var(--text-light); font-size: 1.1rem;}
+         .portfolio-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 40px; }
+         .portfolio-item { 
+         background: var(--bg-white); border-radius: 12px;
+         overflow: hidden; box-shadow: var(--card-shadow);
+         transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+         position: relative; 
+         }
+         .portfolio-item:hover {
+         transform: translateY(-6px); box-shadow: var(--card-shadow-hover);
+         }
+         .portfolio-item .image-wrapper { overflow: hidden; } 
+         .portfolio-item img {
+         width: 100%;
+         height: auto; 
+         max-height: 260px;
+         object-fit: contain; 
+         display: block;
+         background-color: #eee;
+         transition: transform 0.4s ease;
+         }
+         .portfolio-item:hover img { transform: scale(1.05); }
+         .portfolio-content { padding: 30px; }
+         .portfolio-content h3 {
+         margin-bottom: 10px; font-size: 1.7rem; 
+         font-family: var(--font-heading); color: var(--secondary-color);
+         }
+         .portfolio-content h3 a { color: inherit; text-decoration: none; }
+         .portfolio-content h3 a:hover { color: var(--primary-color); text-decoration: underline; }
+         .portfolio-content p { color: var(--text-light); font-size: 1rem; }
+         .dark-section .experience-item {
+         padding: 35px; margin-bottom: 30px; border-left: 5px solid var(--primary-color);
+         }
+         .dark-section .experience-item h4 { font-size: 1.5rem; }
+         .dark-section .experience-item .duration {
+         color: var(--text-on-dark-muted); font-weight: 500; margin-bottom: 15px;
+         display: block; font-size: 0.95rem;
+         }
+         #testimonials .testimonial-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 35px; max-width: 950px; margin: 0 auto; }
+         .dark-section .testimonial-card {
+         padding: 40px 30px; position: relative; padding-top: 50px;
+         }
+         .dark-section .testimonial-card::before { 
+         content: '“'; position: absolute; top: 15px; left: 25px;
+         font-size: 5rem; color: var(--primary-color); opacity: 0.15; line-height: 1;
+         }
+         .dark-section .testimonial-card p { font-style: italic; margin-bottom: 20px; font-size: 1.05rem; color: var(--text-on-dark); }
+         .dark-section .testimonial-card .author {
+         font-weight: 700; color: var(--text-on-dark); 
+         display: block; margin-top: 20px; text-align: right; font-size: 1rem;
+         }
+         .dark-section .testimonial-card .author span {
+         font-weight: 400; color: var(--text-on-dark-muted);
+         font-size: 0.9em; display: block;
+         }
+         #contact { 
+         text-align: center; 
+         }
+         #contact h2 { 
+         margin-bottom: 30px; 
+         }
+         #contact .contact-subtitle { 
+         font-size: 1.25rem; 
+         margin: -20px auto 40px; 
+         color: var(--text-light); 
+         max-width: 600px; 
+         }
+         #contact .email-link {
+         display: inline-block; 
+         font-weight: 600; 
+         font-size: 1.4rem;
+         color: var(--secondary-color); 
+         margin-bottom: 35px; 
+         padding: 5px 0;
+         position: relative; 
+         text-decoration: none;
+         }
+         #contact .email-link::after { 
+         content: ''; 
+         position: absolute; 
+         width: 0; 
+         height: 2px;
+         bottom: 0; 
+         left: 50%; 
+         transform: translateX(-50%);
+         background-color: var(--primary-color); 
+         transition: width 0.3s ease;
+         }
+         #contact .email-link:hover::after { 
+         width: 100%; 
+         }
+         #contact .email-link:hover { 
+         color: var(--secondary-color); 
+         } 
+         .contact-links {
+         display: flex;
+         justify-content: center;  
+         align-items: center;      
+         flex-wrap: wrap;          
+         margin-top: 20px;
+         }
+         .contact-links a {
+         display: flex;            
+         align-items: center;      
+         color: var(--text-light); 
+         margin: 0 15px 15px;
+         text-decoration: none; 
+         font-size: 1.1rem; 
+         font-weight: 500;
+         transition: color var(--transition-speed-fast) ease, transform var(--transition-speed-fast) ease;
+         }
+         .contact-links a svg {
+         margin-right: 8px; 
+         width: 24px;       
+         height: 24px;     
+         }
+         .contact-links a:hover { 
+         color: var(--primary-color); 
+         text-decoration: none; 
+         transform: scale(1.1); 
+         }
+         #contact .cta-btn { 
+         margin-top: 40px; 
+         }
+         .contact-links a[aria-label="LinkedIn Profile"]:hover {
+         color: #0a65c0; 
+         }
+         .contact-links a[aria-label="Dribbble Profile"]:hover {
+         color: #ea4c89;
+         }
+         .contact-links a[aria-label="YouTube Channel"]:hover {
+         color: #ff0000;
+         }
+         .contact-links a[aria-label="Instagram Profile"]:hover {
+         color: #e4405f;
+         }
+         footer { background: var(--bg-dark); color: var(--text-on-dark-muted); text-align: center; padding: 50px 20px; font-size: 0.95em; }
+         footer p { color: var(--text-on-dark-muted); margin-bottom: 0; }
+         .animate-on-scroll {
+         opacity: 0;
+         transition: opacity var(--animation-duration) ease-out, transform var(--animation-duration) ease-out;
+         }
+         .animate-fade-in { transform: translateY(20px); } 
+         .animate-slide-up { transform: translateY(50px); } 
+         .animate-on-scroll.is-visible {
+         opacity: 1;
+         transform: translateY(0);
+         }
+         @media (prefers-reduced-motion: reduce) {
+         html { scroll-behavior: auto; } 
+         .animate-on-scroll { transition: none; opacity: 1; transform: none; } 
+         .cta-btn:hover, .card:hover, .portfolio-item:hover, .portfolio-item img:hover, .skill-tag:hover, .cert:hover, .contact-links a:hover {
+         transform: none; 
+         }
+         #contact .email-link::after { transition: none; } 
+         .loader { animation: none; border-width: 0; } 
+         }
+         @media (max-width: 992px) {
+         .hero-content { flex-direction: column-reverse; text-align: center; }
+         .hero-text { max-width: 100%; margin-bottom: 50px; }
+         .hero-image { max-width: 300px; margin: 0 auto; }
+         .hero-image img { max-height: 300px; }
+         header { padding: 80px 0; min-height: auto; }
+         }
+         @media (max-width: 768px) {
+         section { padding: 80px 0; }
+         header .subtitle { font-size: 1.15em; }
+         #about p { font-size: 1rem; }
+         .services-grid, .portfolio-grid, .testimonial-grid, #experience .container > div { 
+         grid-template-columns: 1fr; gap: 30px;
+         }
+         #about .container, #about p, #about .skills-tools h3, .skills { text-align: center; }
+         .skills { justify-content: center; }
+         }
+         @media (max-width: 480px) {
+         .cta-btn { padding: 12px 30px; font-size: 1em; }
+         header .subtitle { font-size: 1.1em; }
+         .service-card, .portfolio-content, .dark-section .experience-item, .dark-section .testimonial-card { padding: 25px 20px; }
+         .portfolio-item img { height: 220px; }
+         #contact .email-link { font-size: 1.2rem; }
+         .cert { padding: 15px; }
+         }
+      </style>
+   </head>
+   <body>
+      <div id="loader-wrapper">
+         <div class="loader"></div>
+      </div>
+      <header>
+         <div class="container">
+            <div class="hero-content">
+               <div class="hero-text animate-on-scroll animate-fade-in">
+                  <p class="hero-hello">Hello, I'm Puja!</p>
+                  <h1>UI/UX Designer Crafting Digital Experiences</h1>
+                  <p class="subtitle">Passionate about creating intuitive, user-centered, and beautiful interfaces that solve problems and delight users.</p>
+                  <a href="#contact" class="cta-btn">Let’s Collaborate</a>
+               </div>
+               <div class="hero-image animate-on-scroll animate-fade-in" style="transition-delay: 0.2s;">
+                  <img src="resources/me.jpg" alt="Puja Bhattacharjee - UI/UX Designer" loading="lazy" width="400" height="400">
+               </div>
+            </div>
+         </div>
+      </header>
+      <section id="about">
+         <div class="container">
+            <h2 class="animate-on-scroll animate-fade-in">About Me</h2>
+            <p class="animate-on-scroll animate-fade-in" style="transition-delay: 0.2s;">I'm a dedicated UI/UX designer currently shaping experiences at Unfold Solution and leading Creative UX Works. My mission is to design with empathy and purpose, creating interfaces that are not only visually appealing but also highly functional and easy to use. With expertise in Figma, Adobe XD, and Sketch, I specialize in translating complex requirements into seamless user journeys. I believe great design starts with understanding the user. Innovation Enthusiast | Driven by Empathy.</p>
+            <p class="fun-fact animate-on-scroll animate-fade-in" style="transition-delay: 0.4s;"><strong>Fun Fact:</strong> My creative process always begins with <strong>pen and paper sketches</strong> before pixels!</p>
+            <div class="skills-tools animate-on-scroll animate-fade-in" style="transition-delay: 0.5s;">
+               <h3>Skills & Tools</h3>
+               <div class="skills">
+                  <span class="skill-tag">Figma</span><span class="skill-tag">Adobe XD</span><span class="skill-tag">UI Design</span><span class="skill-tag">UX Design</span><span class="skill-tag">Prototyping</span><span class="skill-tag">Wireframing</span><span class="skill-tag">User Research</span><span class="skill-tag">Usability Testing</span><span class="skill-tag">HTML</span><span class="skill-tag">CSS</span><span class="skill-tag">JavaScript</span>
+               </div>
+            </div>
+         </div>
+      </section>
+      <section id="services" class="dark-section">
+         <div class="container">
+            <h2 class="animate-on-scroll animate-fade-in">Services & Pricing</h2>
+            <div class="services-grid">
+               <div class="service-card card animate-on-scroll animate-slide-up" style="transition-delay: 0.1s;">
+                  <h4>Web & App UI/UX Design</h4>
+                  <p>Crafting pixel-perfect, responsive user interfaces for websites and mobile apps, focused on usability, accessibility, and delivering a seamless experience across all devices.</p>
+                  <span class="price" data-price="499">
+                     Starting at $499 
+                     <div><span>(Project Based)</span></div>
+                  </span>
+                  <a href="#contact" class="cta-btn">Get Started</a>
+               </div>
+               <div class="service-card card animate-on-scroll animate-slide-up" style="transition-delay: 0.2s;">
+                  <h4>UI/UX Audit & Consultation</h4>
+                  <p>In-depth review of your existing product's usability and design, providing actionable recommendations for improvement.</p>
+                  <span class="price" data-price="149">
+                     Starting at $149 
+                     <div><span>(Per Audit)</span></div>
+                  </span>
+                  <a href="#contact" class="cta-btn">Request Audit</a>
+               </div>
+               <div class="service-card card animate-on-scroll animate-slide-up" style="transition-delay: 0.3s;">
+                  <h4>UX Research & Prototyping</h4>
+                  <p>Comprehensive user research, journey mapping, wireframing, and creation of interactive prototypes to validate concepts.</p>
+                  <span class="price" data-price="299">
+                     Starting at $299 
+                     <div><span>(Based on Scope)</span></div>
+                  </span>
+                  <a href="#contact" class="cta-btn">Discuss Project</a>
+               </div>
+               <div class="service-card card animate-on-scroll animate-slide-up" style="transition-delay: 0.4s;">
+                  <h4>User Testing & Feedback Sessions</h4>
+                  <p>Moderated or unmoderated usability tests to uncover friction points, followed by detailed reporting and solutions.</p>
+                  <span class="price" data-price="199">
+                     Starting at $199 
+                     <div><span>(Per Session)</span></div>
+                  </span>
+                  <a href="#contact" class="cta-btn">Schedule Test</a>
+               </div>
+               <div class="service-card card animate-on-scroll animate-slide-up" style="transition-delay: 0.5s;">
+                  <h4>Design Systems & Style Guides</h4>
+                  <p>Creation of scalable design systems including UI components, patterns, and brand-aligned visual guidelines.</p>
+                  <span class="price" data-price="699">
+                     Starting at $699 
+                     <div><span>(Project Based)</span></div>
+                  </span>
+                  <a href="#contact" class="cta-btn">Build System</a>
+               </div>
+               <div class="service-card card animate-on-scroll animate-slide-up" style="transition-delay: 0.6s;">
+                  <h4>Accessibility Optimization</h4>
+                  <p>Ensuring your digital product is inclusive and meets WCAG standards through audits and accessible design adjustments.</p>
+                  <span class="price" data-price="249">
+                     Starting at $249 
+                     <div><span>(Per Audit)</span></div>
+                  </span>
+                  <a href="#contact" class="cta-btn">Optimize Accessibility</a>
+               </div>
+               <div class="service-card card animate-on-scroll animate-slide-up" style="transition-delay: 0.7s;">
+                  <h4>Information Architecture & User Flows</h4>
+                  <p>Organizing content and defining user journeys through sitemaps, navigation structures, and flow diagrams.</p>
+                  <span class="price" data-price="199">
+                     Starting at $199 
+                     <div><span>(Based on Scope)</span></div>
+                  </span>
+                  <a href="#contact" class="cta-btn">Plan Structure</a>
+               </div>
+               <div class="service-card card animate-on-scroll animate-slide-up" style="transition-delay: 0.8s;">
+                  <h4>Ongoing UX Support (Retainer)</h4>
+                  <p>Monthly design support for continuous improvements, updates, and design consulting as your product evolves.</p>
+                  <span class="price" data-price="799">
+                     Starting at $799/month 
+                     <div><span>(Retainer Model)</span></div>
+                  </span>
+                  <a href="#contact" class="cta-btn">Start Retainer</a>
+               </div>
+               <div class="service-card card animate-on-scroll animate-slide-up" style="transition-delay: 0.9s;">
+                  <h4>UX Strategy & Product Consulting</h4>
+                  <p>Strategic guidance to align user experience with business goals, including MVP planning, product roadmaps, and UX workshops.</p>
+                  <span class="price" data-price="499">
+                     Starting at $499 
+                     <div><span>(Based on Engagement)</span></div>
+                  </span>
+                  <a href="#contact" class="cta-btn">Book Consultation</a>
+               </div>
+            </div>
+         </div>
+      </section>
+      <section id="portfolio">
+         <div class="container">
+            <h2>Featured Projects</h2>
+            <p style="text-align: center; max-width: 700px; margin: -30px auto 50px auto;">Here are a few examples of my work.</p>
+            <div class="portfolio-grid">
+               <div class="portfolio-item" style="transition-delay: 0.8s;">
+                  <img src="resources/1.png" loading="lazy" alt="Perfume Selling Website">
+                  <div class="portfolio-content">
+                     <h3>Perfume Selling Website</h3>
+                     <p>Designed a responsive e-commerce website to enhance the shopping experience and promote perfumes effectively.</p>
+                     <a href="https://www.behance.net/gallery/196417937/Perfume-Selling-Website" target="_blank" class="cta-btn">View on Behance</a>
+                  </div>
+               </div>
+               <div class="portfolio-item" style="transition-delay: 0.8s;">
+                  <img src="resources/2.png" loading="lazy" alt="Ecommerce Landing Page">
+                  <div class="portfolio-content">
+                     <h3>Ecommerce Landing Page</h3>
+                     <p>Created a sleek and engaging landing page for an e-commerce platform to increase customer conversions.</p>
+                     <a href="https://www.behance.net/gallery/195778499/Ecommerce-Landing-Page" target="_blank" class="cta-btn">View on Behance</a>
+                  </div>
+               </div>
+               <div class="portfolio-item" style="transition-delay: 0.8s;">
+                  <img src="resources/3.png" loading="lazy" alt="Countdown Timer">
+                  <div class="portfolio-content">
+                     <h3>Countdown Timer</h3>
+                     <p>Developed a visually striking countdown timer for time-sensitive events, enhancing user engagement and anticipation.</p>
+                     <a href="https://www.behance.net/gallery/168204657/Countdown-Timer" target="_blank" class="cta-btn">View on Behance</a>
+                  </div>
+               </div>
+               <div class="portfolio-item" style="transition-delay: 0.8s;">
+                  <img src="resources/4.png" loading="lazy" alt="Landing Page Daily UI Challenge">
+                  <div class="portfolio-content">
+                     <h3>Landing Page Daily UI Challenge</h3>
+                     <p>Created a minimalist landing page as part of the Daily UI challenge with a user-friendly design.</p>
+                     <a href="https://www.behance.net/gallery/166429169/Landing-Page-Daily-UI-Challenge" target="_blank" class="cta-btn">View on Behance</a>
+                  </div>
+               </div>
+               <div class="portfolio-item" style="transition-delay: 0.8s;">
+                  <img src="resources/5.png" loading="lazy" alt="Carousal Animation">
+                  <div class="portfolio-content">
+                     <h3>Carousal Animation</h3>
+                     <p>Developed an interactive and visually engaging carousel animation to showcase products and promotions dynamically.</p>
+                     <a href="https://www.behance.net/gallery/222879629/Carousal-Animation" target="_blank" class="cta-btn">View on Behance</a>
+                  </div>
+               </div>
+               <div class="portfolio-item" style="transition-delay: 0.8s;">
+                  <img src="resources/6.png" loading="lazy" alt="Coffee Shop Website">
+                  <div class="portfolio-content">
+                     <h3>Coffee Shop Website</h3>
+                     <p>Designed a stylish website for a coffee shop, with user-friendly navigation and an inviting aesthetic.</p>
+                     <a href="https://www.behance.net/gallery/207955159/Coffee-Shop-Website" target="_blank" class="cta-btn">View on Behance</a>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </section>
+      <section id="experience" class="dark-section">
+         <div class="container">
+            <h2 class="animate-on-scroll animate-fade-in">Work Experience</h2>
+            <div class="experience-item card animate-on-scroll animate-slide-up">
+               <h4>UX Designer</h4>
+               <span class="duration">Unfold Solution | 2023 – Present</span>
+               <p>As a UX Designer at Unfold Solution, I lead design initiatives for diverse web and mobile applications. I collaborate closely with developers and product managers to deliver user-centric solutions that enhance overall usability. My role involves conducting usability testing, iterating on designs based on user feedback, and ensuring seamless user experiences across platforms.</p>
+            </div>
+            <div class="experience-item card animate-on-scroll animate-slide-up" style="transition-delay: 0.1s;">
+               <h4>Founder & Freelance UI/UX Designer</h4>
+               <span class="duration">Self-Employed / Creative UX Works | 2023 – Present</span>
+               <p>As the founder of Creative UX Works, I am building a design agency focused on creating exceptional, user-centered designs. I handle all aspects of the design process, from initial ideation and research to creating high-fidelity mockups and delivering final designs. My goal is to create intuitive and engaging user experiences that stand out in the competitive design landscape.</p>
+            </div>
+         </div>
+      </section>
+      <section id="certifications">
+         <div class="container">
+            <h2 class="animate-on-scroll animate-fade-in">Licenses & Certifications</h2>
+            <div class="cert-list">
+               <div class="cert animate-on-scroll animate-fade-in">
+                  <strong>Google UX Design Professional</strong>
+                  <p>Completed a comprehensive program in UX design, focusing on user research, wireframing, prototyping, and design systems.</p>
+                  <em>Completion Date: March 2023</em>
+               </div>
+               <div class="cert animate-on-scroll animate-fade-in" style="transition-delay: 0.05s;">
+                  <strong>Meta</strong> – Principles of UX/UI Design
+                  <p>Learned the foundations of UX and UI design through hands-on projects and real-world scenarios, enhancing user-centric thinking.</p>
+                  <em>Completion Date: May 2023</em>
+               </div>
+               <div class="cert animate-on-scroll animate-fade-in" style="transition-delay: 0.1s;">
+                  <strong>University of Michigan</strong> – Introduction to CSS3
+                  <p>Explored core CSS3 concepts to create responsive, accessible layouts with advanced styling techniques for modern web design.</p>
+                  <em>Completion Date: May 2023</em>
+               </div>
+               <div class="cert animate-on-scroll animate-fade-in" style="transition-delay: 0.15s;">
+                  <strong>Internshala Trainings</strong> – UI/UX Design
+                  <p>Gained practical experience in UI/UX, covering visual design, design tools, and user flows through hands-on assignments.</p>
+                  <em>Completion Date: July 2022</em>
+               </div>
+               <div class="cert animate-on-scroll animate-fade-in" style="transition-delay: 0.2s;">
+                  <strong>Great Learning</strong> – UI/UX Design
+                  <p>Focused on enhancing user interface skills, usability heuristics, and wireframing methods through guided projects and feedback.</p>
+                  <em>Completion Date: May 2022</em>
+               </div>
+               <div class="cert animate-on-scroll animate-fade-in" style="transition-delay: 0.25s;">
+                  <strong>GrowthSchool</strong> – UI Design Kickstarter Workshop
+                  <p>Participated in an intensive workshop that emphasized rapid prototyping, UI design strategies, and design thinking workflows.</p>
+                  <em>Completion Date: August 2022</em>
+               </div>
+            </div>
+         </div>
+      </section>
+      <section id="testimonials" class="dark-section">
+         <div class="container">
+            <h2 class="animate-on-scroll animate-fade-in">What Clients Say</h2>
+            <div class="testimonial-grid">
+               <div class="testimonial-card card animate-on-scroll animate-slide-up">
+                  <p>"Puja brought so much clarity to our product design. She took the time to understand our goals, challenged our assumptions, and created a user experience that just works. The feedback from our users has been amazing."</p>
+                  <span class="author">– Priyanka Khandelwal</span>
+               </div>
+               <div class="testimonial-card card animate-on-scroll animate-slide-up" style="transition-delay: 0.1s;">
+                  <p>"We hired Puja for a complete UX overhaul of our app, and it was the best decision we made. Her process is thoughtful and collaborative, and the final result exceeded our expectations. We’ve already seen an increase in engagement."</p>
+                  <span class="author">– Emily Taylor</span>
+               </div>
+            </div>
+         </div>
+      </section>
+      <section id="contact">
+         <div class="container animate-on-scroll animate-fade-in">
+            <h2>Ready to Elevate Your Project?</h2>
+            <p class="contact-subtitle">Let's discuss how my design expertise can help you achieve your goals. Reach out today!</p>
+            <p><a href="mailto:pujabhattacharjee835@gmail.com" class="email-link">pujabhattacharjee835@gmail.com</a></p>
+            <div class="contact-links">
+               <a href="https://linkedin.com/in/puja-bhattacharjee" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn Profile" class="social-link">
+                  <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                     <path fill-rule="evenodd" d="M12.51 8.796v1.697a3.738 3.738 0 0 1 3.288-1.684c3.455 0 4.202 2.16 4.202 4.97V19.5h-3.2v-5.072c0-1.21-.244-2.766-2.128-2.766-1.827 0-2.139 1.317-2.139 2.676V19.5h-3.19V8.796h3.168ZM7.2 6.106a1.61 1.61 0 0 1-.988 1.483 1.595 1.595 0 0 1-1.743-.348A1.607 1.607 0 0 1 5.6 4.5a1.601 1.601 0 0 1 1.6 1.606Z" clip-rule="evenodd"/>
+                     <path d="M7.2 8.809H4V19.5h3.2V8.809Z"/>
+                  </svg>
+                  LinkedIn
+               </a>
+               <a href="https://dribbble.com/pujadesigns" target="_blank" rel="noopener noreferrer" aria-label="Dribbble Profile" class="social-link">
+                  <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                     <path fill-rule="evenodd" d="M12 2a10 10 0 1 0 10 10A10.009 10.009 0 0 0 12 2Zm6.613 4.614a8.523 8.523 0 0 1 1.93 5.32 20.093 20.093 0 0 0-5.949-.274c-.059-.149-.122-.292-.184-.441a23.879 23.879 0 0 0-.566-1.239 11.41 11.41 0 0 0 4.769-3.366ZM10 3.707a8.82 8.82 0 0 1 2-.238 8.5 8.5 0 0 1 5.664 2.152 9.608 9.608 0 0 1-4.476 3.087A45.755 45.755 0 0 0 10 3.707Zm-6.358 6.555a8.57 8.57 0 0 1 4.73-5.981 53.99 53.99 0 0 1 3.168 4.941 32.078 32.078 0 0 1-7.9 1.04h.002Zm2.01 7.46a8.51 8.51 0 0 1-2.2-5.707v-.262a31.641 31.641 0 0 0 8.777-1.219c.243.477.477.964.692 1.449-.114.032-.227.067-.336.1a13.569 13.569 0 0 0-6.942 5.636l.009.003ZM12 20.556a8.508 8.508 0 0 1-5.243-1.8 11.717 11.717 0 0 1 6.7-5.332.509.509 0 0 1 .055-.02 35.65 35.65 0 0 1 1.819 6.476 8.476 8.476 0 0 1-3.331.676Zm4.772-1.462A37.232 37.232 0 0 0 15.113 13a12.513 12.513 0 0 1 5.321.364 8.56 8.56 0 0 1-3.66 5.73h-.002Z" clip-rule="evenodd"/>
+                  </svg>
+                  Dribbble
+               </a>
+               <a href="https://www.youtube.com/@puja_uiux/videos" target="_blank" rel="noopener noreferrer" aria-label="YouTube Channel" class="social-link">
+                  <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                     <path fill-rule="evenodd" d="M21.7 8.037a4.26 4.26 0 0 0-.789-1.964 2.84 2.84 0 0 0-1.984-.839c-2.767-.2-6.926-.2-6.926-.2s-4.157 0-6.928.2a2.836 2.836 0 0 0-1.983.839 4.225 4.225 0 0 0-.79 1.965 30.146 30.146 0 0 0-.2 3.206v1.5a30.12 30.12 0 0 0 .2 3.206c.094.712.364 1.39.784 1.972.604.536 1.38.837 2.187.848 1.583.151 6.731.2 6.731.2s4.161 0 6.928-.2a2.844 2.844 0 0 0 1.985-.84 4.27 4.27 0 0 0 .787-1.965 30.12 30.12 0 0 0 .2-3.206v-1.516a30.672 30.672 0 0 0-.202-3.206Zm-11.692 6.554v-5.62l5.4 2.819-5.4 2.801Z" clip-rule="evenodd"/>
+                  </svg>
+                  YouTube
+               </a>
+               <a href="https://www.instagram.com/creativeuxworks/" target="_blank" rel="noopener noreferrer" aria-label="Instagram Profile" class="social-link">
+                  <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                     <path fill="currentColor" fill-rule="evenodd" d="M3 8a5 5 0 0 1 5-5h8a5 5 0 0 1 5 5v8a5 5 0 0 1-5 5H8a5 5 0 0 1-5-5V8Zm5-3a3 3 0 0 0-3 3v8a3 3 0 0 0 3 3h8a3 3 0 0 0 3-3V8a3 3 0 0 0-3-3H8Zm7.597 2.214a1 1 0 0 1 1-1h.01a1 1 0 1 1 0 2h-.01a1 1 0 0 1-1-1ZM12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6Zm-5 3a5 5 0 1 1 10 0 5 5 0 0 1-10 0Z" clip-rule="evenodd"/>
+                  </svg>
+                  Instagram
+               </a>
+            </div>
+            <a href="#services" class="cta-btn">View My Services</a>
+         </div>
+      </section>
+      <footer>
+         <div class="container">
+            <p>&copy; <span id="current-year">2025</span> Puja Bhattacharjee – UI/UX Designer. All Rights Reserved.</p>
+         </div>
+      </footer>
+      <script>
+         window.onload = function() {
+             const loaderWrapper = document.getElementById('loader-wrapper');
+             if(loaderWrapper) {
+                 loaderWrapper.classList.add('hidden');
+             }
+             const currentYearSpan = document.getElementById('current-year');
+             if (currentYearSpan) {
+                 currentYearSpan.textContent = new Date().getFullYear();
+             }
+         };
+         const animatedElements = document.querySelectorAll('.animate-on-scroll');
+         
+         const observer = new IntersectionObserver((entries) => {
+             entries.forEach(entry => {
+                 if (entry.isIntersecting) {
+                     entry.target.classList.add('is-visible');
+                 } else {
+                 }
+             });
+         }, {
+             threshold: 0.1 
+         });
+         
+         animatedElements.forEach(el => {
+             observer.observe(el);
+         });
+      </script>
+      <script>
+         async function convertPrices() {
+             try {
+                 const geoRes = await fetch('https://ipapi.co/json/');
+                 const geoData = await geoRes.json();
+                 const userCurrency = geoData.currency;
+         
+                 if (userCurrency === "USD") return;
+         
+                 const rateRes = await fetch(`https://api.frankfurter.app/latest?amount=1&from=USD&to=${userCurrency}`);
+                 const rateData = await rateRes.json();
+                 const rate = rateData.rates[userCurrency];
+         
+                 document.querySelectorAll('.price[data-price]').forEach(el => {
+                     const usdPrice = parseFloat(el.dataset.price);
+                     const converted = Math.ceil(usdPrice * rate);
+                     el.innerHTML = `${converted} ${userCurrency} <div><span>(Converted from $${usdPrice})</span></div>`;
+                 });
+             } catch (err) {
+                 console.error("Currency conversion failed:", err);
+             }
+         }
+         
+         document.addEventListener("DOMContentLoaded", convertPrices);
+      </script>
+   </body>
+</html>
