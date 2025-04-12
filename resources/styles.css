@@ -358,7 +358,7 @@ header .cta-btn {
 }
 
 .cert {
-	background: var(--bg-light);
+	background: #ffffff;
 	padding: 18px 25px;
 	border-radius: 10px;
 	border: 1px solid var(--border-color);

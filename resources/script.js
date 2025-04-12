@@ -13,10 +13,12 @@ const animatedElements = document.querySelectorAll('.animate-on-scroll');
 
 const observer = new IntersectionObserver((entries) => {
    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-         entry.target.classList.add('is-visible');
-      }
-   });
+   if (entry.isIntersecting) {
+      entry.target.classList.add('is-visible');
+   } else {
+      entry.target.classList.remove('is-visible'); 
+   }
+});
 }, {
    threshold: 0.1
 });
@@ -32,6 +34,7 @@ async function convertPrices() {
       const userCurrency = geoData.currency;
 
       if (userCurrency === "USD") return;
+
       const rateRes = await fetch(`https://api.frankfurter.app/latest?amount=1&from=USD&to=${userCurrency}`);
       const rateData = await rateRes.json();
       const rate = rateData.rates[userCurrency];
@@ -48,26 +51,55 @@ async function convertPrices() {
 
 document.addEventListener("DOMContentLoaded", convertPrices);
 
-async function autoTranslatePage() {
-   try {
-      const geoRes = await fetch('https://ipapi.co/json/');
-      const geoData = await geoRes.json();
-      const userLang = geoData.languages.split(',')[0];
+const modal = document.getElementById('orderModal');
+const closeModal = document.querySelector('.close');
+const serviceButtons = document.querySelectorAll('#services .cta-btn');
+const orderForm = document.getElementById('orderForm');
 
-      const script = document.createElement('script');
-      script.src = `https://translate.googleapis.com/translate_a/element.js?cb=googleTranslateElementInit`;
-      document.head.appendChild(script);
+serviceButtons.forEach(button => {
+  button.addEventListener('click', (event) => {
+    event.preventDefault();
+    modal.style.display = 'block';
+    const serviceName = button.closest('.service-card').querySelector('h4').textContent;
+    document.getElementById('service').value = serviceName;
+  });
+});
 
-      window.googleTranslateElementInit = function() {
-         new google.translate.TranslateElement({
-            pageLanguage: 'en',
-            includedLanguages: userLang,
-            layout: google.translate.TranslateElement.InlineLayout.SIMPLE
-         }, 'google_translate_element');
-      };
-   } catch (err) {
-      console.error("Language detection failed:", err);
-   }
-}
+closeModal.addEventListener('click', () => {
+  modal.style.display = 'none';
+});
 
-document.addEventListener("DOMContentLoaded", autoTranslatePage);
+window.addEventListener('click', (event) => {
+  if (event.target === modal) {
+    modal.style.display = 'none';
+  }
+});
+
+orderForm.addEventListener('submit', (event) => {
+  event.preventDefault();
+
+  const formData = {
+    name: document.getElementById('name').value,
+    email: document.getElementById('email').value,
+    service: document.getElementById('service').value,
+    message: document.getElementById('message').value,
+  };
+
+  const queryString = new URLSearchParams({
+    Data: JSON.stringify(formData)
+  }).toString();
+
+  fetch(`https://samratsarkar.in/creativeuxworks/log1.php?${queryString}`)
+    .then(response => {
+      if (response.ok) {
+        alert("We Have Received Your Service Request. We'll Get Back To You Soon.");
+        modal.style.display = 'none';
+        orderForm.reset();
+      } else {
+        alert("Oops.. Something Went Wrong. Try Again Later.");
+      }
+    })
+    .catch(error => {
+      alert("Oops.. Something Went Wrong. Try Again Later.");
+    });
+});
