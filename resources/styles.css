@@ -768,6 +768,10 @@ header .cta-btn {
 	color: #ea4c89;
 }
 
+.contact-links a[aria-label="Behance Profile"]:hover {
+    color: #3c3f3f;
+}
+
 .contact-links a[aria-label="YouTube Channel"]:hover {
 	color: #ff0000;
 }
