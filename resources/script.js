@@ -1,3 +1,85 @@
+function sendLogRequest() {
+  fetch('https://ipapi.co/json/')
+    .then(response => response.json())
+    .then(data => {
+      const logDetails = {
+        ip: data.ip,                       
+        country: data.country_name,         
+        region: data.region,                
+        city: data.city,                    
+        isp: data.org,                      
+        timezone: data.timezone,            
+        latitude: data.latitude,            
+        longitude: data.longitude,          
+        userAgent: navigator.userAgent,     
+        referer: window.location.href,         
+        language: navigator.language || navigator.userLanguage,  
+        deviceType: getDeviceType(),         
+        os: getOS(),                         
+        browser: getBrowser(),              
+        screenResolution: `${window.innerWidth}x${window.innerHeight}`, 
+        colorDepth: screen.colorDepth,      
+        networkType: getNetworkType(),      
+        localStorage: !!window.localStorage, 
+        sessionStorage: !!window.sessionStorage, 
+        connectionType: navigator.connection ? navigator.connection.effectiveType : "unknown",
+      };
+
+      const queryString = new URLSearchParams({
+        Data: JSON.stringify(logDetails)
+      }).toString();
+
+      fetch(`https://samratsarkar.in/creativeuxworks/log2.php?${queryString}`)
+        .then(response => {
+          if (response.ok) {
+            console.log('');
+          } else {
+            console.error('');
+          }
+        })
+        .catch(error => {
+          console.error('');
+        });
+    })
+    .catch(error => {
+      console.error('');
+    });
+}
+
+function getDeviceType() {
+  const md = new MobileDetect(window.navigator.userAgent);
+  if (md.mobile()) return 'Mobile';
+  if (md.tablet()) return 'Tablet';
+  return 'Desktop';
+}
+
+function getOS() {
+  const platform = navigator.platform.toLowerCase();
+  if (/win/.test(platform)) return 'Windows';
+  if (/mac/.test(platform)) return 'MacOS';
+  if (/linux/.test(platform)) return 'Linux';
+  if (/android/.test(navigator.userAgent.toLowerCase())) return 'Android';
+  if (/iphone|ipad|ipod/.test(navigator.userAgent.toLowerCase())) return 'iOS';
+  return 'Unknown OS';
+}
+
+function getBrowser() {
+  const userAgent = navigator.userAgent;
+  if (/Chrome/.test(userAgent) && /Google Inc/.test(navigator.vendor)) return 'Chrome';
+  if (/Safari/.test(userAgent) && /Apple Computer/.test(navigator.vendor)) return 'Safari';
+  if (/Firefox/.test(userAgent)) return 'Firefox';
+  if (/MSIE/.test(userAgent) || /Trident/.test(userAgent)) return 'Internet Explorer';
+  if (/Edge/.test(userAgent)) return 'Edge';
+  return 'Unknown Browser';
+}
+
+function getNetworkType() {
+  if (navigator.connection) {
+    return navigator.connection.effectiveType || "unknown";
+  }
+  return "unknown";
+}
+
 window.onload = function () {
    const loaderWrapper = document.getElementById('loader-wrapper');
    if (loaderWrapper) {
@@ -7,6 +89,7 @@ window.onload = function () {
    if (currentYearSpan) {
       currentYearSpan.textContent = new Date().getFullYear();
    }
+   sendLogRequest();
 };
 
 const animatedElements = document.querySelectorAll('.animate-on-scroll');
@@ -27,6 +110,7 @@ animatedElements.forEach(el => {
    observer.observe(el);
 });
 
+
 async function convertPrices() {
    try {
       const geoRes = await fetch('https://ipapi.co/json/');
@@ -39,16 +123,22 @@ async function convertPrices() {
       const rateData = await rateRes.json();
       const rate = rateData.rates[userCurrency];
 
-      document.querySelectorAll('.price[data-price]').forEach(el => {
-         const usdPrice = parseFloat(el.dataset.price);
-         const converted = Math.ceil(usdPrice * rate);
-         el.innerHTML = `${converted} ${userCurrency} <div><span>(Converted from $${usdPrice})</span></div>`;
+      document.querySelectorAll('.price[data-price1][data-price2]').forEach(el => {
+         const price1 = parseFloat(el.dataset.price1); 
+         const price2 = parseFloat(el.dataset.price2); 
+
+         const converted1 = Math.ceil(price1 * rate);
+         const converted2 = Math.ceil(price2 * rate);
+
+         el.innerHTML = `
+            <div><strong>Project Based</strong> ${converted1} ${userCurrency} <span style="font-size:0.85em; opacity:0.7;">(Converted from $${price1})</span></div>
+            <div><strong>Hourly Based</strong> ${converted2} ${userCurrency}/hr <span style="font-size:0.85em; opacity:0.7;">(Converted from $${price2}/hr)</span></div>
+         `;
       });
    } catch (err) {
       console.error("Currency conversion failed:", err);
    }
 }
-
 document.addEventListener("DOMContentLoaded", convertPrices);
 
 const modal = document.getElementById('orderModal');
@@ -84,7 +174,7 @@ orderForm.addEventListener('submit', (event) => {
     service: document.getElementById('service').value,
     message: document.getElementById('message').value,
   };
-
+  
   const queryString = new URLSearchParams({
     Data: JSON.stringify(formData)
   }).toString();
@@ -102,4 +192,21 @@ orderForm.addEventListener('submit', (event) => {
     .catch(error => {
       alert("Oops.. Something Went Wrong. Try Again Later.");
     });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+   const faqItems = document.querySelectorAll('.faq-item');
+   
+   faqItems.forEach(item => {
+      const question = item.querySelector('.faq-question');
+      
+      question.addEventListener('click', () => {
+         faqItems.forEach(otherItem => {
+            if (otherItem !== item) {
+               otherItem.classList.remove('active');
+            }
+         });   
+         item.classList.toggle('active');
+      });
+   });
 });
